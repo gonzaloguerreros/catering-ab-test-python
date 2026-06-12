@@ -1,0 +1,42 @@
+# CI pipeline — runs on every push and pull request to main.
+# Validates: lint (pyflakes) + unit tests (pytest).
+# Industry standard: Google, Netflix, Airbnb all gate merges on CI green.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Lint & Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.10"]   # test oldest and newest supported
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with pyflakes
+        run: python -m pyflakes src/ main.py
+
+      - name: Check style with pycodestyle
+        run: python -m pycodestyle src/ main.py --max-line-length=100
+
+      - name: Run unit tests
+        run: python -m pytest tests/ -v --tb=short
