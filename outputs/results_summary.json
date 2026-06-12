@@ -1,0 +1,93 @@
+{
+  "experiment": "SPRING20",
+  "conversion": {
+    "metric": "Conversion Rate",
+    "n_control": 250,
+    "n_treatment": 250,
+    "conversions_control": 126,
+    "conversions_treatment": 129,
+    "rate_control": 0.504,
+    "rate_treatment": 0.516,
+    "absolute_lift": 0.012,
+    "relative_lift_pct": 2.38,
+    "ci_95_diff": [
+      -0.0756,
+      0.0996
+    ],
+    "ci_95_control": [
+      0.4424,
+      0.5654
+    ],
+    "ci_95_treatment": [
+      0.4543,
+      0.5772
+    ],
+    "z_statistic": 0.2684,
+    "p_value": 0.788405,
+    "significant": "False",
+    "cohens_h": 0.024,
+    "alternative": "two-sided"
+  },
+  "first_order_gmv": {
+    "metric": "First-Order GMV (converters only)",
+    "n_control": 126,
+    "n_treatment": 129,
+    "mean_control": 423.54,
+    "mean_treatment": 479.9,
+    "median_control": 406.96,
+    "median_treatment": 458.87,
+    "std_control": 151.3,
+    "std_treatment": 155.98,
+    "absolute_mean_lift": 56.37,
+    "relative_mean_lift_pct": 13.31,
+    "ci_95_mean_diff": [
+      18.47,
+      94.26
+    ],
+    "t_statistic_welch": 2.9292,
+    "p_value_welch": 0.003708,
+    "significant_welch": "True",
+    "u_statistic_mann_whitney": 9954.0,
+    "p_value_mann_whitney": 0.001924,
+    "significant_mann_whitney": "True",
+    "cohens_d": 0.3668
+  },
+  "gmv_60d": {
+    "metric": "60-Day GMV (all accounts)",
+    "n_control": 250,
+    "n_treatment": 250,
+    "mean_control": 592.26,
+    "mean_treatment": 697.55,
+    "absolute_mean_lift": 105.3,
+    "relative_mean_lift_pct": 17.78,
+    "ci_95_mean_diff": [
+      -23.63,
+      234.22
+    ],
+    "t_statistic": 1.6047,
+    "p_value": 0.1092,
+    "significant": "False",
+    "cohens_d": 0.1435
+  },
+  "power": {
+    "n_per_group": 250,
+    "alpha": 0.05,
+    "target_power": 0.8,
+    "observed_effect_h": 0.024,
+    "achieved_power": 0.0583,
+    "adequately_powered": "False",
+    "mde_cohens_h": 0.2506,
+    "mde_approx_rate_diff": 0.1253
+  },
+  "business_impact": {
+    "n_treatment_accounts": 250,
+    "total_discount_cost_usd": 12381.5,
+    "avg_discount_per_account_usd": 49.53,
+    "incremental_gmv_per_account": 105.3,
+    "total_incremental_gmv_usd": 26324.3,
+    "platform_take_rate": 0.2,
+    "incremental_platform_revenue": 5264.86,
+    "campaign_roi": 0.43,
+    "roi_positive": "False"
+  }
+}
