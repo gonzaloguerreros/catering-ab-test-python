@@ -24,7 +24,7 @@
     ],
     "z_statistic": 0.2684,
     "p_value": 0.788405,
-    "significant": "False",
+    "significant": false,
     "cohens_h": 0.024,
     "alternative": "two-sided"
   },
@@ -46,10 +46,10 @@
     ],
     "t_statistic_welch": 2.9292,
     "p_value_welch": 0.003708,
-    "significant_welch": "True",
+    "significant_welch": true,
     "u_statistic_mann_whitney": 9954.0,
     "p_value_mann_whitney": 0.001924,
-    "significant_mann_whitney": "True",
+    "significant_mann_whitney": true,
     "cohens_d": 0.3668
   },
   "gmv_60d": {
@@ -66,7 +66,7 @@
     ],
     "t_statistic": 1.6047,
     "p_value": 0.1092,
-    "significant": "False",
+    "significant": false,
     "cohens_d": 0.1435
   },
   "power": {
@@ -75,7 +75,7 @@
     "target_power": 0.8,
     "observed_effect_h": 0.024,
     "achieved_power": 0.0583,
-    "adequately_powered": "False",
+    "adequately_powered": false,
     "mde_cohens_h": 0.2506,
     "mde_approx_rate_diff": 0.1253
   },
@@ -88,6 +88,6 @@
     "platform_take_rate": 0.2,
     "incremental_platform_revenue": 5264.86,
     "campaign_roi": 0.43,
-    "roi_positive": "False"
+    "roi_positive": false
   }
 }
