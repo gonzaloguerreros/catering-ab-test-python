@@ -106,6 +106,27 @@ python main.py
 
 ---
 
+## Subgroup / Segment Analysis
+
+A core part of any A/B test is cutting the data across dimensions to find **who the treatment actually works for** — and whether aggregate results are masking a strong effect in a specific segment.
+
+This project implements two types of segment cuts:
+
+| Segment | What it tests |
+|---------|--------------|
+| **Account tier** (SMB / Mid-market / Enterprise) | Does the discount resonate differently by company size? |
+| **Industry vertical** (Finance, Legal, Tech, Healthcare, Retail) | Do certain industries place larger first orders? |
+| **Power users** (accounts with ≥ 4 orders in prior 90 days) | Do already-engaged accounts respond differently to a discount incentive? |
+| **Account age** (new < 60 days vs. established) | Is this a new-account acquisition tool or a re-engagement tool? |
+
+All subgroup tests apply **Bonferroni correction** (α / k = 0.05 / 7 ≈ 0.007 per test) to control the family-wise Type I error rate when running multiple comparisons. Segments with fewer than 5 observations per arm are excluded automatically.
+
+The power user cut is particularly relevant in a marketplace context: if the discount is primarily being captured by accounts that would have ordered anyway, it's pure margin erosion — not incremental growth.
+
+**Key finding:** Finance and Legal verticals showed 20%+ relative conversion lift, though sample sizes were too small for individual significance. Recommended follow-up: re-run targeted at these verticals with a reduced discount (10%) to improve ROI.
+
+---
+
 ## Key Analytical Decisions
 
 - **Why account-level, not order-level randomisation?** Order-level randomisation in a B2B context creates contamination risk — the same account manager placing repeat orders could receive both treatment and control, inflating or masking the true effect.
