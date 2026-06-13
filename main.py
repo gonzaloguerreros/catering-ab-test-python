@@ -53,6 +53,12 @@ from ab_test_analysis import (
 )
 from config import DATA_DIR, OUTPUTS_DIR
 from data_generator import generate_experiment_data
+from experiment_design import (
+    ExperimentSpec,
+    required_sample_size_proportions,
+    experiment_runtime_days,
+    define_power_users,
+)
 from visualizations import (
     plot_60d_gmv,
     plot_conversion_rates,
@@ -95,6 +101,58 @@ def _log_dict(d: dict, indent: int = 2) -> None:
 
 def run_analysis() -> None:
     """Execute the full A/B test analysis pipeline."""
+
+    # 0. PROSPECTIVE EXPERIMENT DESIGN (done before launch) ------------------
+    _section("STEP 0 — Prospective Experiment Design (Pre-Launch)")
+
+    spec = ExperimentSpec(
+        name             = "SPRING20",
+        hypothesis       = "20% first-order discount will increase 30-day conversion rate "
+                           "for newly acquired mid-market accounts by reducing first-order friction.",
+        unit             = "corporate_account",
+        control_desc     = "Standard onboarding — no discount",
+        treatment_desc   = "20% off first order",
+        primary_metric   = "30-day conversion rate",
+        secondary_metrics= ["First-order GMV (converters only)", "60-day GMV (all accounts)",
+                            "Orders in first 60 days"],
+        guardrail_metrics= ["Cancellation rate", "Caterer on-time delivery rate",
+                            "Support ticket rate"],
+        segment_cuts     = ["Account tier (SMB / mid-market / enterprise)",
+                            "Industry vertical",
+                            "Power users (≥ 4 orders in prior 90 days) vs. regular",
+                            "New accounts (< 60 days) vs. established"],
+        alpha            = 0.05,
+        power            = 0.80,
+        min_detectable_effect = 0.03,
+    )
+    logger.info("\n%s", spec.summary())
+
+    # Required sample size — prospective calculation
+    sizing = required_sample_size_proportions(
+        baseline_rate=0.25,       # historical baseline from data warehouse
+        min_detectable_effect=0.03,
+    )
+    logger.info(
+        "[Prospective Sizing]  MDE=+3pp | N per group: %d | N total: %d",
+        sizing["n_per_group"], sizing["n_total"],
+    )
+
+    runtime = experiment_runtime_days(
+        n_required=sizing["n_total"],
+        daily_eligible=30,        # ~30 new mid-market accounts/day historically
+    )
+    logger.info(
+        "[Runtime Estimate]  %d days (%d weeks) to reach required N",
+        runtime["recommended_days"], runtime["recommended_weeks"],
+    )
+
+    power_user_def = define_power_users(orders_threshold=4, lookback_days=90)
+    logger.info("[Power User Segment]  %s", power_user_def["definition"])
+    logger.info(
+        "[Note] This experiment has only %d accounts per group — "
+        "underpowered for the +3pp MDE target. Results are illustrative.",
+        250,
+    )
 
     # 1. Generate data -------------------------------------------------------
     _section("STEP 1 — Generating Experiment Dataset")
